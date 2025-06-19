@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Скебоб</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('Skebob.jpg'); /* Убедись, что файл называется именно так и лежит рядом */
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .download-button {
+      font-size: 24px;
+      padding: 15px 30px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .download-button:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <a href="Причина.txt" download>
+    <button class="download-button">ПРИЧИНА</button>
+  </a>
+</body>
+</html>
