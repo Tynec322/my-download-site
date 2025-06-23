@@ -3,715 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Пазл - Picture1 та Music1</title>
+  <title>Пазл з QR</title>
   <style>
-    * {
-      box-sizing: border-box;
+    body, html {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      min-height: 100vh;
+      overflow: hidden;
+      height: 100vh;
+      background: url('your-background.jpg') no-repeat center center/cover;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
-      color: white;
-      overflow-x: hidden;
-    }
-    
-    .container {
-      max-width: 1200px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-    
-    header {
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      width: 100%;
-      margin: 10px 0;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
-    
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      letter-spacing: 1px;
-      background: linear-gradient(to right, #ff9966, #ff5e62);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .subtitle {
-      font-size: 1.2rem;
-      opacity: 0.9;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    
-    .github-info {
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 10px;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    
-    .github-info code {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
-    
-    .game-area {
-      display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 30px;
-      width: 100%;
-      margin-top: 10px;
     }
-    
-    .puzzle-section {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    #puzzle-container {
-      position: relative;
+    #puzzle {
       width: 500px;
       height: 500px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
-      background: rgba(0, 0, 0, 0.2);
-      margin-bottom: 20px;
-    }
-    
-    #puzzle-board {
-      width: 100%;
-      height: 100%;
       position: relative;
+      border: 2px solid #fff;
     }
-    
-    .puzzle-piece {
+    .piece {
+      width: 100px;
+      height: 100px;
       position: absolute;
+      background-image: url('Picture1.png');
       background-size: 500px 500px;
       cursor: grab;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 5px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      z-index: 1;
     }
-    
-    .puzzle-piece:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-      z-index: 10;
-    }
-    
-    .puzzle-piece.correct {
-      border: 2px solid #00ff00;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-    }
-    
-    .puzzle-slot {
-      position: absolute;
-      border: 2px dashed rgba(255, 255, 255, 0.2);
-      border-radius: 5px;
-      background: rgba(0, 0, 0, 0.1);
-      z-index: 0;
-    }
-    
-    .controls-section {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      min-width: 300px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .music-controls {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 20px;
-      border-radius: 15px;
-    }
-    
     #controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 15px;
-      border-radius: 10px;
-      width: 100%;
-    }
-    
-    #volumeControl {
-      width: 100%;
-      height: 10px;
-      -webkit-appearance: none;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      border-radius: 5px;
-      outline: none;
-    }
-    
-    #volumeControl::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: white;
-      cursor: pointer;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    }
-    
-    #musicToggle {
-      padding: 12px 30px;
-      font-size: 18px;
-      border: none;
-      border-radius: 50px;
-      background: linear-gradient(to right, #ff9966, #ff5e62);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: bold;
-      letter-spacing: 1px;
-      box-shadow: 0 5px 15px rgba(255, 94, 98, 0.4);
-      width: 100%;
-    }
-    
-    #musicToggle:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 94, 98, 0.6);
-    }
-    
-    #musicToggle:active {
-      transform: translateY(1px);
-    }
-    
-    .volume-container {
+      margin-top: 20px;
       display: flex;
       align-items: center;
       gap: 10px;
-      width: 100%;
-    }
-    
-    .volume-container label {
-      font-size: 18px;
-      min-width: 100px;
-      text-align: left;
-    }
-    
-    .instructions {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 20px;
-      border-radius: 15px;
-      text-align: left;
-      margin-top: 10px;
-    }
-    
-    .instructions h3 {
-      margin-bottom: 15px;
-      font-size: 1.5rem;
-      text-align: center;
-      color: #ff9966;
-    }
-    
-    .instructions ul {
-      padding-left: 20px;
-      margin-top: 10px;
-    }
-    
-    .instructions li {
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-    
-    .success-message {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-    }
-    
-    .success-message.show {
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    .success-content {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      max-width: 600px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    }
-    
-    .success-content h2 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      color: white;
-    }
-    
-    .success-content p {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
-    
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: #f00;
-      opacity: 0.8;
-      animation: fall linear forwards;
-    }
-    
-    @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-      margin-top: 20px;
-      font-size: 1.2rem;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
       border-radius: 10px;
     }
-    
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    #volumeControl {
+      width: 200px;
     }
-    
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #ff9966;
-    }
-    
-    .github-url {
-      color: #58a6ff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    
-    .github-url:hover {
-      text-decoration: underline;
-    }
-    
-    .status-bar {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.3);
-      width: 100%;
-      text-align: center;
-    }
-    
-    .status-bar.success {
-      background: rgba(0, 128, 0, 0.3);
-    }
-    
-    .status-bar.error {
-      background: rgba(255, 0, 0, 0.3);
-    }
-    
-    @media (max-width: 1100px) {
-      .game-area {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .controls-section {
-        width: 500px;
-      }
-    }
-    
-    @media (max-width: 600px) {
-      #puzzle-container {
-        width: 90vw;
-        height: 90vw;
-      }
-      
-      .puzzle-piece, .puzzle-slot {
-        width: calc(90vw / 5);
-        height: calc(90vw / 5);
-      }
-      
-      .controls-section {
-        width: 90vw;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
+    #musicToggle {
+      padding: 5px 15px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>GitHub Пазл</h1>
-      <p class="subtitle">Просто завантажте Picture1 та music1 у ваш репозиторій, і гра почнеться автоматично!</p>
-      <div class="github-info">
-        <p>Файли, які повинні бути в репозиторії:</p>
-        <ul>
-          <li><code>Picture1.jpg</code> - зображення для пазлу</li>
-          <li><code>music1.mp3</code> - музичний супровід</li>
-        </ul>
-      </div>
-    </header>
-    
-    <div class="game-area">
-      <div class="puzzle-section">
-        <h2>Поле гри</h2>
-        <div class="status-bar" id="imageStatus">Завантаження зображення...</div>
-        <div id="puzzle-container">
-          <div id="puzzle-board"></div>
-        </div>
-        <div class="stats">
-          <div class="stat-item">
-            <div class="stat-label">Фрагментів</div>
-            <div class="stat-value">25</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Правильно</div>
-            <div class="stat-value" id="correctCount">0</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Складність</div>
-            <div class="stat-value">★★★</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="controls-section">
-        <div class="music-controls">
-          <h2>Музичний супровід</h2>
-          <div class="status-bar" id="musicStatus">Завантаження музики...</div>
-          <div id="controls">
-            <div class="volume-container">
-              <label for="volumeControl">Гучність:</label>
-              <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7">
-            </div>
-            <button id="musicToggle">Старт музики</button>
-          </div>
-        </div>
-        
-        <div class="instructions">
-          <h3>Як грати?</h3>
-          <ul>
-            <li>Перетягуйте фрагменти пазлу на сітку</li>
-            <li>Якщо фрагмент на правильному місці, він зафіксується</li>
-            <li>Коли всі фрагменти будуть на своїх місцях, ви перемогли!</li>
-            <li>Використовуйте кнопку для контролю музики</li>
-            <li>Регулюйте гучність за допомогою повзунка</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="success-message" id="successMessage">
-    <div class="success-content">
-      <h2>Вітаємо!</h2>
-      <p>Ви успішно склали пазл! Ваше зображення повністю відновлено.</p>
-      <button id="continueButton" style="
-        padding: 12px 40px;
-        font-size: 1.2rem;
-        border: none;
-        border-radius: 50px;
-        background: linear-gradient(to right, #4facfe, #00f2fe);
-        color: white;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      ">Грати знову</button>
-    </div>
+  <div id="puzzle"></div>
+
+  <div id="controls">
+    <label for="volumeControl">Гучність: </label>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+    <button id="musicToggle">Пауза</button>
   </div>
 
-  <audio id="musicTrack"></audio>
+  <audio id="track1" src="music1.mp3"></audio>
+  <audio id="track2" src="music2.mp3"></audio>
+  <audio id="track3" src="music3.mp3"></audio>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Константи гри
-      const PUZZLE_SIZE = 5;
-      const TILE_SIZE = 100;
-      const BOARD_SIZE = 500;
-      
-      // Елементи DOM
-      const puzzleBoard = document.getElementById('puzzle-board');
-      const correctCountElement = document.getElementById('correctCount');
-      const musicTrack = document.getElementById('musicTrack');
-      const imageStatus = document.getElementById('imageStatus');
-      const musicStatus = document.getElementById('musicStatus');
-      
-      // Стан гри
-      let puzzlePieces = [];
-      let puzzleSlots = [];
-      let correctCount = 0;
-      
-      // Шляхи до файлів
-      const IMAGE_PATH = 'Picture1.jpg';
-      const MUSIC_PATH = 'music1.mp3';
-      
-      // Ініціалізація гри
-      function initGame() {
-        // Очистити дошку
-        puzzleBoard.innerHTML = '';
-        puzzlePieces = [];
-        puzzleSlots = [];
-        correctCount = 0;
-        correctCountElement.textContent = correctCount;
-        
-        // Створення слотів
-        for (let row = 0; row < PUZZLE_SIZE; row++) {
-          for (let col = 0; col < PUZZLE_SIZE; col++) {
-            const slot = document.createElement('div');
-            slot.className = 'puzzle-slot';
-            slot.style.width = `${TILE_SIZE}px`;
-            slot.style.height = `${TILE_SIZE}px`;
-            slot.style.left = `${col * TILE_SIZE}px`;
-            slot.style.top = `${row * TILE_SIZE}px`;
-            slot.dataset.row = row;
-            slot.dataset.col = col;
-            puzzleBoard.appendChild(slot);
-            puzzleSlots.push(slot);
-          }
-        }
-        
-        // Створення фрагментів пазлу
-        for (let row = 0; row < PUZZLE_SIZE; row++) {
-          for (let col = 0; col < PUZZLE_SIZE; col++) {
-            const piece = document.createElement('div');
-            piece.className = 'puzzle-piece';
-            piece.style.width = `${TILE_SIZE}px`;
-            piece.style.height = `${TILE_SIZE}px`;
-            
-            // Використання зображення з репозиторію
-            piece.style.backgroundImage = `url(${IMAGE_PATH})`;
-            piece.style.backgroundPosition = `-${col * TILE_SIZE}px -${row * TILE_SIZE}px`;
-            
-            piece.dataset.row = row;
-            piece.dataset.col = col;
-            
-            // Випадкове розміщення
-            piece.style.left = `${Math.random() * (BOARD_SIZE - TILE_SIZE)}px`;
-            piece.style.top = `${Math.random() * (BOARD_SIZE - TILE_SIZE)}px`;
-            
-            // Додавання можливості перетягування
-            piece.draggable = true;
-            piece.addEventListener('dragstart', handleDragStart);
-            
-            puzzleBoard.appendChild(piece);
-            puzzlePieces.push(piece);
-          }
-        }
-      }
-      
-      // Обробники перетягування
-      function handleDragStart(e) {
-        e.dataTransfer.setData('text/plain', e.target.dataset.row + ',' + e.target.dataset.col);
-      }
-      
-      puzzleBoard.addEventListener('dragover', e => {
-        e.preventDefault();
-      });
-      
-      puzzleBoard.addEventListener('drop', e => {
-        e.preventDefault();
-        const data = e.dataTransfer.getData('text/plain').split(',');
-        const row = parseInt(data[0]);
-        const col = parseInt(data[1]);
-        const piece = puzzlePieces.find(p => 
-          p.dataset.row == row && p.dataset.col == col
-        );
-        
-        // Знайти найближчий слот
-        const rect = puzzleBoard.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        
-        let closestSlot = null;
-        let minDistance = Infinity;
-        
-        puzzleSlots.forEach(slot => {
-          const slotX = parseInt(slot.style.left) + TILE_SIZE / 2;
-          const slotY = parseInt(slot.style.top) + TILE_SIZE / 2;
-          const distance = Math.sqrt(
-            Math.pow(mouseX - slotX, 2) + 
-            Math.pow(mouseY - slotY, 2)
-          );
-          
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestSlot = slot;
-          }
+    const puzzle = document.getElementById('puzzle');
+    const size = 5;
+    const tileSize = 100;
+    const pieces = [];
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.backgroundPosition = `-${x * tileSize}px -${y * tileSize}px`;
+        piece.dataset.correctX = x * tileSize;
+        piece.dataset.correctY = y * tileSize;
+
+        piece.style.left = `${Math.random() * (500 - tileSize)}px`;
+        piece.style.top = `${Math.random() * (500 - tileSize)}px`;
+
+        piece.draggable = true;
+        piece.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', pieces.indexOf(piece));
         });
-        
-        if (closestSlot && minDistance < TILE_SIZE) {
-          const slotRow = parseInt(closestSlot.dataset.row);
-          const slotCol = parseInt(closestSlot.dataset.col);
-          
-          // Перевірка чи фрагмент на правильному місці
-          if (row === slotRow && col === slotCol) {
-            piece.style.left = `${slotCol * TILE_SIZE}px`;
-            piece.style.top = `${slotRow * TILE_SIZE}px`;
-            piece.classList.add('correct');
-            piece.draggable = false;
-            
-            // Оновлення лічильника
-            correctCount++;
-            correctCountElement.textContent = correctCount;
-            
-            // Перевірка завершення
-            if (correctCount === PUZZLE_SIZE * PUZZLE_SIZE) {
-              setTimeout(() => {
-                document.getElementById('successMessage').classList.add('show');
-                createConfetti();
-              }, 1000);
-            }
-          }
-        }
-      });
-      
-      // Музичний контроль
-      const volumeSlider = document.getElementById('volumeControl');
-      volumeSlider.addEventListener('input', () => {
-        musicTrack.volume = volumeSlider.value;
-      });
-      
-      const toggleBtn = document.getElementById('musicToggle');
-      let isPlaying = false;
-      
-      toggleBtn.addEventListener('click', () => {
-        if (!isPlaying) {
-          // Перше включення музики
-          musicTrack.play().then(() => {
-            isPlaying = true;
-            toggleBtn.textContent = 'Пауза';
-          }).catch(error => {
-            console.log("Потрібна взаємодія користувача: " + error);
-            alert("Браузер вимагає взаємодії користувача для запуску музики. Натисніть кнопку ще раз.");
-          });
-        } else {
-          musicTrack.pause();
-          isPlaying = false;
-          toggleBtn.textContent = 'Старт музики';
-        }
-      });
-      
-      // Конфетті для перемоги
-      function createConfetti() {
-        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-        const container = document.querySelector('.success-message.show');
-        
-        for (let i = 0; i < 200; i++) {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = `${Math.random() * 100}%`;
-          confetti.style.top = '-10px';
-          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-          confetti.style.width = `${Math.random() * 10 + 5}px`;
-          confetti.style.height = confetti.style.width;
-          confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
-          container.appendChild(confetti);
-          
-          setTimeout(() => {
-            confetti.remove();
-          }, 5000);
-        }
+
+        pieces.push(piece);
+        puzzle.appendChild(piece);
       }
-      
-      // Обробка кнопки продовження
-      document.getElementById('continueButton').addEventListener('click', () => {
-        document.getElementById('successMessage').classList.remove('show');
-        initGame();
-      });
-      
-      // Перевірка наявності файлів
-      function checkFiles() {
-        // Перевірка зображення
-        const imageTest = new Image();
-        imageTest.onload = function() {
-          imageStatus.textContent = "Зображення Picture1.jpg завантажено успішно!";
-          imageStatus.classList.add('success');
-          initGame();
-        };
-        imageTest.onerror = function() {
-          imageStatus.textContent = "Помилка: Picture1.jpg не знайдено в репозиторії";
-          imageStatus.classList.add('error');
-          
-          // Створити пазл з градієнтами, якщо зображення відсутнє
-          setTimeout(initGame, 1000);
-        };
-        imageTest.src = IMAGE_PATH;
-        
-        // Перевірка музики
-        musicTrack.src = MUSIC_PATH;
-        musicTrack.load();
-        
-        musicTrack.onloadeddata = function() {
-          musicStatus.textContent = "Музичний файл music1.mp3 завантажено успішно!";
-          musicStatus.classList.add('success');
-        };
-        
-        musicTrack.onerror = function() {
-          musicStatus.textContent = "Помилка: music1.mp3 не знайдено в репозиторії";
-          musicStatus.classList.add('error');
-        };
+    }
+
+    puzzle.addEventListener('dragover', e => e.preventDefault());
+    puzzle.addEventListener('drop', e => {
+      e.preventDefault();
+      const index = e.dataTransfer.getData('text/plain');
+      const piece = pieces[index];
+      const rect = puzzle.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+
+      const newX = Math.floor(offsetX / tileSize) * tileSize;
+      const newY = Math.floor(offsetY / tileSize) * tileSize;
+
+      piece.style.left = `${newX}px`;
+      piece.style.top = `${newY}px`;
+    });
+
+    // Music sequence logic
+    const tracks = [
+      document.getElementById('music1'),
+      document.getElementById('music1'),
+      document.getElementById('music1')
+    ];
+    let currentTrack = 0;
+
+    function playNext() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      tracks[currentTrack].play();
+    }
+
+    tracks.forEach(track => track.onended = playNext);
+    tracks[0].play();
+
+    // Volume control
+    const volumeSlider = document.getElementById('volumeControl');
+    volumeSlider.addEventListener('input', () => {
+      tracks.forEach(track => track.volume = volumeSlider.value);
+    });
+
+    // Play/pause toggle
+    const toggleBtn = document.getElementById('musicToggle');
+    let isPlaying = true;
+
+    toggleBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        tracks.forEach(track => track.pause());
+        toggleBtn.textContent = 'Старт';
+      } else {
+        tracks[currentTrack].play();
+        toggleBtn.textContent = 'Пауза';
       }
-      
-      // Запуск перевірки файлів
-      checkFiles();
+      isPlaying = !isPlaying;
     });
   </script>
 </body>
