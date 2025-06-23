@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пазл з QR</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      background: url('your-background.jpg') no-repeat center center/cover;
+    }
+    #puzzle {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      width: 500px;
+      height: 500px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid #fff;
+    }
+    .piece {
+      width: 100%;
+      height: 100%;
+      background-image: url('image.png');
+      background-size: 500px 500px;
+      cursor: move;
+    }
+  </style>
+</head>
+<body>
+  <div id="puzzle"></div>
+  <audio id="track1" src="music1.mp3"></audio>
+  <audio id="track2" src="music2.mp3"></audio>
+  <audio id="track3" src="music3.mp3"></audio>
+
+  <script>
+    const puzzle = document.getElementById('puzzle');
+    const size = 5;
+
+    // Generate puzzle pieces
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
+        puzzle.appendChild(piece);
+      }
+    }
+
+    // Basic shuffle
+    for (let i = puzzle.children.length; i >= 0; i--) {
+      puzzle.appendChild(puzzle.children[Math.random() * i | 0]);
+    }
+
+    // Music sequence
+    const track1 = document.getElementById('track1');
+    const track2 = document.getElementById('track2');
+    const track3 = document.getElementById('track3');
+
+    track1.play();
+    track1.onended = () => {
+      track2.play();
+      track2.onended = () => {
+        track3.play();
+      }
+    };
+  </script>
+</body>
+</html>
