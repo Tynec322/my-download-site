@@ -26,7 +26,7 @@
       width: 100px;
       height: 100px;
       position: absolute;
-      background-image: url('Picture1.png');
+      background-image: url('image.png');
       background-size: 500px 500px;
       cursor: grab;
     }
@@ -54,12 +54,10 @@
   <div id="controls">
     <label for="volumeControl">Гучність: </label>
     <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
-    <button id="musicToggle">Пауза</button>
+    <button id="musicToggle">Старт</button>
   </div>
 
-  <audio id="track1" src="music1.mp3"></audio>
-  <audio id="track2" src="music2.mp3"></audio>
-  <audio id="track3" src="music3.mp3"></audio>
+  <audio id="track" src="music1.mp3"></audio>
 
   <script>
     const puzzle = document.getElementById('puzzle');
@@ -104,39 +102,23 @@
       piece.style.top = `${newY}px`;
     });
 
-    // Music sequence logic
-    const tracks = [
-      document.getElementById('music1'),
-      document.getElementById('music1'),
-      document.getElementById('music1')
-    ];
-    let currentTrack = 0;
+    // Music logic for one track
+    const track = document.getElementById('track');
+    let isPlaying = false;
 
-    function playNext() {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      tracks[currentTrack].play();
-    }
-
-    tracks.forEach(track => track.onended = playNext);
-    tracks[0].play();
-
-    // Volume control
     const volumeSlider = document.getElementById('volumeControl');
     volumeSlider.addEventListener('input', () => {
-      tracks.forEach(track => track.volume = volumeSlider.value);
+      track.volume = volumeSlider.value;
     });
 
-    // Play/pause toggle
     const toggleBtn = document.getElementById('musicToggle');
-    let isPlaying = true;
-
     toggleBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        tracks.forEach(track => track.pause());
-        toggleBtn.textContent = 'Старт';
-      } else {
-        tracks[currentTrack].play();
+      if (!isPlaying) {
+        track.play();
         toggleBtn.textContent = 'Пауза';
+      } else {
+        track.pause();
+        toggleBtn.textContent = 'Старт';
       }
       isPlaying = !isPlaying;
     });
