@@ -3,142 +3,619 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Пазл з QR</title>
+  <title>Музичний Пазл з QR-кодом</title>
   <style>
-    body, html {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      height: 100vh;
-      background: url('your-background.jpg') no-repeat center center/cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      color: white;
+      text-align: center;
     }
+    
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    header {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      width: 100%;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 5px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      letter-spacing: 1px;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    .game-area {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .puzzle-section {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
     #puzzle {
       width: 500px;
       height: 500px;
       position: relative;
-      border: 2px solid #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.2);
     }
+    
     .piece {
       width: 100px;
       height: 100px;
       position: absolute;
-      background-image: url('image.png');
       background-size: 500px 500px;
       cursor: grab;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    
+    .piece:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+    
+    .piece:active {
+      cursor: grabbing;
+    }
+    
+    .controls-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      align-self: flex-start;
+    }
+    
+    .music-controls {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+    }
+    
     #controls {
-      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+      width: 100%;
+    }
+    
+    #volumeControl {
+      width: 100%;
+      height: 10px;
+      -webkit-appearance: none;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      border-radius: 5px;
+      outline: none;
+    }
+    
+    #volumeControl::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    #musicToggle {
+      padding: 12px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 5px 15px rgba(255, 94, 98, 0.4);
+      width: 100%;
+    }
+    
+    #musicToggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 94, 98, 0.6);
+    }
+    
+    #musicToggle:active {
+      transform: translateY(1px);
+    }
+    
+    .volume-container {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.8);
+      width: 100%;
+    }
+    
+    .volume-container label {
+      font-size: 18px;
+      min-width: 100px;
+      text-align: left;
+    }
+    
+    .instructions {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: left;
+      margin-top: 10px;
+    }
+    
+    .instructions h3 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      text-align: center;
+      color: #ff9966;
+    }
+    
+    .instructions ul {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+    
+    .instructions li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    
+    .qr-section {
+      margin-top: 10px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    #qrCode {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      background: white;
       padding: 10px;
       border-radius: 10px;
     }
-    #volumeControl {
-      width: 200px;
+    
+    .qr-section p {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      max-width: 300px;
+      line-height: 1.6;
     }
-    #musicToggle {
-      padding: 5px 15px;
-      font-size: 16px;
+    
+    .success-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    
+    .success-message.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .success-content {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 600px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    .success-content h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+    
+    .success-content p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      opacity: 0.8;
+      animation: fall linear forwards;
+    }
+    
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff9966;
+    }
+    
+    @media (max-width: 1100px) {
+      .game-area {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .controls-section {
+        width: 500px;
+        align-self: center;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      #puzzle {
+        width: 90vw;
+        height: 90vw;
+      }
+      
+      .piece {
+        width: calc(90vw / 5);
+        height: calc(90vw / 5);
+      }
+      
+      .controls-section {
+        width: 90vw;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="puzzle"></div>
-
-  <div id="controls">
-    <label for="volumeControl">Гучність: </label>
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
-    <button id="musicToggle">Пауза</button>
+  <div class="container">
+    <header>
+      <h1>Музичний Пазл з QR-кодом</h1>
+      <p class="subtitle">Складіть пазл, щоб відкрити QR-код, насолоджуючись музикою. Перетягуйте фрагменти пазлу на правильні позиції.</p>
+    </header>
+    
+    <div class="game-area">
+      <div class="puzzle-section">
+        <div id="puzzle"></div>
+      </div>
+      
+      <div class="controls-section">
+        <div class="music-controls">
+          <h2>Музичний супровід</h2>
+          <div id="controls">
+            <div class="volume-container">
+              <label for="volumeControl">Гучність:</label>
+              <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+            </div>
+            <button id="musicToggle">Старт музики</button>
+          </div>
+        </div>
+        
+        <div class="instructions">
+          <h3>Як грати?</h3>
+          <ul>
+            <li>Перетягуйте фрагменти пазлу на поле, щоб скласти зображення</li>
+            <li>Коли пазл буде зібрано, ви побачите QR-код</li>
+            <li>Використовуйте кнопку для контролю музики</li>
+            <li>Регулюйте гучність за допомогою повзунка</li>
+            <li>Музика почне грати після натискання кнопки "Старт музики"</li>
+          </ul>
+        </div>
+        
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-label">Фрагментів</div>
+            <div class="stat-value">25</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Складність</div>
+            <div class="stat-value">★★★</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="qr-section">
+        <h2>Ваша нагорода</h2>
+        <div id="qrCode"></div>
+        <p>Відскануйте цей QR-код після складання пазлу, щоб отримати доступ до ексклюзивного контенту!</p>
+      </div>
+    </div>
   </div>
-
-  <audio id="track1" source src="music1.mp3"></audio>
-  <audio id="track2" src="music2.mp3"></audio>
-  <audio id="track3" src="music3.mp3"></audio>
+  
+  <div class="success-message" id="successMessage">
+    <div class="success-content">
+      <h2>Вітаємо!</h2>
+      <p>Ви успішно склали пазл! Тепер ви можете відсканувати QR-код, щоб отримати доступ до ексклюзивного контенту.</p>
+      <button id="continueButton" style="
+        padding: 12px 40px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      ">Продовжити</button>
+    </div>
+  </div>
+  
+  <audio id="track1" src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3"></audio>
+  <audio id="track2" src="https://assets.mixkit.co/music/preview/mixkit-simple-game-music-loop-310.mp3"></audio>
+  <audio id="track3" src="https://assets.mixkit.co/music/preview/mixkit-game-show-theme-687.mp3"></audio>
 
   <script>
-    const puzzle = document.getElementById('puzzle');
-    const size = 5;
-    const tileSize = 100;
-    const pieces = [];
-
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        const piece = document.createElement('div');
-        piece.className = 'piece';
-        piece.style.backgroundPosition = `-${x * tileSize}px -${y * tileSize}px`;
-        piece.dataset.correctX = x * tileSize;
-        piece.dataset.correctY = y * tileSize;
-
-        piece.style.left = `${Math.random() * (500 - tileSize)}px`;
-        piece.style.top = `${Math.random() * (500 - tileSize)}px`;
-
-        piece.draggable = true;
-        piece.addEventListener('dragstart', e => {
-          e.dataTransfer.setData('text/plain', pieces.indexOf(piece));
-        });
-
-        pieces.push(piece);
-        puzzle.appendChild(piece);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Створення QR-коду
+      const qrCode = document.getElementById('qrCode');
+      qrCode.innerHTML = `
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <rect width="180" height="180" fill="white"/>
+          <!-- QR код (спрощена версія) -->
+          <rect x="20" y="20" width="140" height="140" fill="black"/>
+          <rect x="40" y="40" width="100" height="100" fill="white"/>
+          <rect x="60" y="60" width="60" height="60" fill="black"/>
+          <rect x="70" y="25" width="5" height="30" fill="black"/>
+          <rect x="25" y="70" width="30" height="5" fill="black"/>
+        </svg>
+      `;
+      
+      const puzzle = document.getElementById('puzzle');
+      const size = 5;
+      const tileSize = 100;
+      const pieces = [];
+      let placedPieces = 0;
+      
+      // Генерація пазлу
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const piece = document.createElement('div');
+          piece.className = 'piece';
+          
+          // Генерація градієнтного фону для кожного фрагменту
+          const hue = (x * size + y) * 10;
+          piece.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue + 40}, 70%, 40%))`;
+          
+          // Додавання тексту для демонстрації
+          piece.innerHTML = `<div style="
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 24px; 
+            font-weight: bold;
+            color: rgba(255,255,255,0.7);
+          ">${x+1}-${y+1}</div>`;
+          
+          piece.dataset.correctX = x * tileSize;
+          piece.dataset.correctY = y * tileSize;
+          
+          // Випадкове розміщення фрагментів
+          piece.style.left = `${Math.random() * (500 - tileSize)}px`;
+          piece.style.top = `${Math.random() * (500 - tileSize)}px`;
+          
+          piece.draggable = true;
+          piece.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', pieces.indexOf(piece));
+          });
+          
+          pieces.push(piece);
+          puzzle.appendChild(piece);
+        }
       }
-    }
-
-    puzzle.addEventListener('dragover', e => e.preventDefault());
-    puzzle.addEventListener('drop', e => {
-      e.preventDefault();
-      const index = e.dataTransfer.getData('text/plain');
-      const piece = pieces[index];
-      const rect = puzzle.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const offsetY = e.clientY - rect.top;
-
-      const newX = Math.floor(offsetX / tileSize) * tileSize;
-      const newY = Math.floor(offsetY / tileSize) * tileSize;
-
-      piece.style.left = `${newX}px`;
-      piece.style.top = `${newY}px`;
-    });
-
-    // Music sequence logic
-    const tracks = [
-      document.getElementById('track1'),
-      document.getElementById('track2'),
-      document.getElementById('track3')
-    ];
-    let currentTrack = 0;
-
-    function playNext() {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      tracks[currentTrack].play();
-    }
-
-    tracks.forEach(track => track.onended = playNext);
-    tracks[0].play();
-
-    // Volume control
-    const volumeSlider = document.getElementById('volumeControl');
-    volumeSlider.addEventListener('input', () => {
-      tracks.forEach(track => track.volume = volumeSlider.value);
-    });
-
-    // Play/pause toggle
-    const toggleBtn = document.getElementById('musicToggle');
-    let isPlaying = true;
-
-    toggleBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        tracks.forEach(track => track.pause());
-        toggleBtn.textContent = 'Старт';
-      } else {
+      
+      // Обробка перетягування
+      puzzle.addEventListener('dragover', e => e.preventDefault());
+      puzzle.addEventListener('drop', e => {
+        e.preventDefault();
+        const index = e.dataTransfer.getData('text/plain');
+        const piece = pieces[index];
+        const rect = puzzle.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+        
+        const newX = Math.floor(offsetX / tileSize) * tileSize;
+        const newY = Math.floor(offsetY / tileSize) * tileSize;
+        
+        piece.style.left = `${newX}px`;
+        piece.style.top = `${newY}px`;
+        
+        // Перевірка чи фрагмент на правильному місці
+        if (parseInt(piece.dataset.correctX) === newX && 
+            parseInt(piece.dataset.correctY) === newY) {
+          piece.style.border = "2px solid #00ff00";
+          placedPieces++;
+          
+          // Перевірка завершення пазлу
+          if (placedPieces === size * size) {
+            setTimeout(() => {
+              document.getElementById('successMessage').classList.add('show');
+              createConfetti();
+            }, 1000);
+          }
+        } else {
+          piece.style.border = "1px solid rgba(255, 255, 255, 0.2)";
+        }
+      });
+      
+      // Музика
+      const tracks = [
+        document.getElementById('track1'),
+        document.getElementById('track2'),
+        document.getElementById('track3')
+      ];
+      let currentTrack = 0;
+      let isPlaying = false;
+      
+      function playNext() {
+        currentTrack = (currentTrack + 1) % tracks.length;
         tracks[currentTrack].play();
-        toggleBtn.textContent = 'Пауза';
       }
-      isPlaying = !isPlaying;
+      
+      // Обробка помилок при відтворенні
+      function playWithFallback() {
+        tracks[currentTrack].play().catch(error => {
+          console.log("Автовідтворення заблоковано, натисніть кнопку 'Старт музики'");
+        });
+      }
+      
+      tracks.forEach(track => {
+        track.onended = playNext;
+        track.onerror = () => console.error("Помилка завантаження аудіо");
+      });
+      
+      // Контроль гучності
+      const volumeSlider = document.getElementById('volumeControl');
+      volumeSlider.addEventListener('input', () => {
+        tracks.forEach(track => track.volume = volumeSlider.value);
+      });
+      
+      // Кнопка пуск/пауза
+      const toggleBtn = document.getElementById('musicToggle');
+      toggleBtn.addEventListener('click', () => {
+        if (!isPlaying) {
+          // Перше включення музики
+          tracks[currentTrack].play().then(() => {
+            isPlaying = true;
+            toggleBtn.textContent = 'Пауза';
+          }).catch(error => {
+            console.log("Потрібна взаємодія користувача: " + error);
+            alert("Браузер вимагає взаємодії користувача для запуску музики. Натисніть кнопку ще раз.");
+          });
+        } else {
+          tracks.forEach(track => track.pause());
+          isPlaying = false;
+          toggleBtn.textContent = 'Старт музики';
+        }
+      });
+      
+      // Конфетті для перемоги
+      function createConfetti() {
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        const container = document.querySelector('.success-message.show');
+        
+        for (let i = 0; i < 200; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = `${Math.random() * 100}%`;
+          confetti.style.top = '-10px';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.width = `${Math.random() * 10 + 5}px`;
+          confetti.style.height = confetti.style.width;
+          confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+          container.appendChild(confetti);
+          
+          setTimeout(() => {
+            confetti.remove();
+          }, 5000);
+        }
+      }
+      
+      // Обробка кнопки продовження
+      document.getElementById('continueButton').addEventListener('click', () => {
+        document.getElementById('successMessage').classList.remove('show');
+      });
     });
   </script>
 </body>
