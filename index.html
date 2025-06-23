@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Пазл з QR-кодом | GitHub Версія</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>GitHub Пазл - Picture1 та Music1</title>
   <style>
     * {
       box-sizing: border-box;
@@ -19,11 +18,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       padding: 20px;
-      overflow-x: hidden;
       color: white;
-      text-align: center;
+      overflow-x: hidden;
     }
     
     .container {
@@ -37,17 +34,17 @@
     
     header {
       text-align: center;
-      padding: 15px;
+      padding: 20px;
       background: rgba(0, 0, 0, 0.3);
       border-radius: 15px;
       width: 100%;
-      margin-bottom: 10px;
+      margin: 10px 0;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
     
     h1 {
       font-size: 2.8rem;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       letter-spacing: 1px;
       background: linear-gradient(to right, #ff9966, #ff5e62);
@@ -58,9 +55,24 @@
     .subtitle {
       font-size: 1.2rem;
       opacity: 0.9;
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
       line-height: 1.6;
+    }
+    
+    .github-info {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    
+    .github-info code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 5px;
+      border-radius: 4px;
     }
     
     .game-area {
@@ -79,38 +91,56 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
-    #puzzle {
+    #puzzle-container {
+      position: relative;
       width: 500px;
       height: 500px;
-      position: relative;
       border: 2px solid rgba(255, 255, 255, 0.3);
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
       background: rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
     }
     
-    .piece {
-      width: 100px;
-      height: 100px;
+    #puzzle-board {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    .puzzle-piece {
       position: absolute;
       background-size: 500px 500px;
       cursor: grab;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 5px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      z-index: 1;
     }
     
-    .piece:hover {
+    .puzzle-piece:hover {
       transform: scale(1.03);
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
       z-index: 10;
     }
     
-    .piece:active {
-      cursor: grabbing;
+    .puzzle-piece.correct {
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+    
+    .puzzle-slot {
+      position: absolute;
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 0;
     }
     
     .controls-section {
@@ -124,7 +154,6 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      align-self: flex-start;
     }
     
     .music-controls {
@@ -225,41 +254,6 @@
       line-height: 1.5;
     }
     
-    .qr-section {
-      margin-top: 10px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    #qrCode {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    #qrCode img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-    
-    .qr-section p {
-      margin-top: 15px;
-      font-size: 1.1rem;
-      max-width: 300px;
-      line-height: 1.6;
-    }
-    
     .success-message {
       position: fixed;
       top: 0;
@@ -342,56 +336,31 @@
       color: #ff9966;
     }
     
-    .config-section {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 20px;
-      border-radius: 15px;
-      margin-top: 20px;
-      width: 100%;
-    }
-    
-    .config-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 15px;
-    }
-    
-    .config-item {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .config-item label {
-      font-weight: bold;
-      color: #ffcc00;
-    }
-    
-    .config-item input {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      background: rgba(255, 255, 255, 0.9);
-    }
-    
-    .github-info {
-      margin-top: 20px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      text-align: center;
-      width: 100%;
-    }
-    
-    .github-info a {
-      color: #4facfe;
+    .github-url {
+      color: #58a6ff;
       text-decoration: none;
       font-weight: bold;
     }
     
-    .github-info a:hover {
+    .github-url:hover {
       text-decoration: underline;
+    }
+    
+    .status-bar {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      width: 100%;
+      text-align: center;
+    }
+    
+    .status-bar.success {
+      background: rgba(0, 128, 0, 0.3);
+    }
+    
+    .status-bar.error {
+      background: rgba(255, 0, 0, 0.3);
     }
     
     @media (max-width: 1100px) {
@@ -402,17 +371,16 @@
       
       .controls-section {
         width: 500px;
-        align-self: center;
       }
     }
     
     @media (max-width: 600px) {
-      #puzzle {
+      #puzzle-container {
         width: 90vw;
         height: 90vw;
       }
       
-      .piece {
+      .puzzle-piece, .puzzle-slot {
         width: calc(90vw / 5);
         height: calc(90vw / 5);
       }
@@ -430,41 +398,32 @@
 <body>
   <div class="container">
     <header>
-      <h1><i class="fab fa-github"></i> Пазл з QR-кодом - GitHub Версія</h1>
-      <p class="subtitle">Складіть пазл, щоб відкрити QR-код, насолоджуючись музикою. Легко налаштовується для вашого GitHub проекту!</p>
+      <h1>GitHub Пазл</h1>
+      <p class="subtitle">Просто завантажте Picture1 та music1 у ваш репозиторій, і гра почнеться автоматично!</p>
+      <div class="github-info">
+        <p>Файли, які повинні бути в репозиторії:</p>
+        <ul>
+          <li><code>Picture1.jpg</code> - зображення для пазлу</li>
+          <li><code>music1.mp3</code> - музичний супровід</li>
+        </ul>
+      </div>
     </header>
     
     <div class="game-area">
       <div class="puzzle-section">
-        <div id="puzzle"></div>
-      </div>
-      
-      <div class="controls-section">
-        <div class="music-controls">
-          <h2><i class="fas fa-music"></i> Музичний супровід</h2>
-          <div id="controls">
-            <div class="volume-container">
-              <label for="volumeControl"><i class="fas fa-volume-up"></i> Гучність:</label>
-              <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
-            </div>
-            <button id="musicToggle"><i class="fas fa-play"></i> Старт музики</button>
-          </div>
+        <h2>Поле гри</h2>
+        <div class="status-bar" id="imageStatus">Завантаження зображення...</div>
+        <div id="puzzle-container">
+          <div id="puzzle-board"></div>
         </div>
-        
-        <div class="instructions">
-          <h3><i class="fas fa-info-circle"></i> Як грати?</h3>
-          <ul>
-            <li>Перетягуйте фрагменти пазлу на поле, щоб скласти зображення</li>
-            <li>Коли пазл буде зібрано, ви побачите QR-код</li>
-            <li>Використовуйте кнопку для контролю музики</li>
-            <li>Регулюйте гучність за допомогою повзунка</li>
-          </ul>
-        </div>
-        
         <div class="stats">
           <div class="stat-item">
             <div class="stat-label">Фрагментів</div>
             <div class="stat-value">25</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Правильно</div>
+            <div class="stat-value" id="correctCount">0</div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Складність</div>
@@ -473,70 +432,37 @@
         </div>
       </div>
       
-      <div class="qr-section">
-        <h2><i class="fas fa-qrcode"></i> Ваша нагорода</h2>
-        <div id="qrCode">
-          <!-- QR code will be inserted here -->
-        </div>
-        <p>Відскануйте цей QR-код після складання пазлу, щоб отримати доступ до ексклюзивного контенту!</p>
-      </div>
-    </div>
-    
-    <div class="config-section">
-      <h2><i class="fas fa-cog"></i> Налаштування для GitHub</h2>
-      <div class="config-container">
-        <div class="config-item">
-          <label for="qrInput">URL вашого QR-коду:</label>
-          <input type="text" id="qrInput" placeholder="https://example.com/qr-code.png">
-          <small>Посилання на зображення вашого QR-коду</small>
+      <div class="controls-section">
+        <div class="music-controls">
+          <h2>Музичний супровід</h2>
+          <div class="status-bar" id="musicStatus">Завантаження музики...</div>
+          <div id="controls">
+            <div class="volume-container">
+              <label for="volumeControl">Гучність:</label>
+              <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7">
+            </div>
+            <button id="musicToggle">Старт музики</button>
+          </div>
         </div>
         
-        <div class="config-item">
-          <label for="puzzleImage">URL зображення для пазлу:</label>
-          <input type="text" id="puzzleImage" placeholder="https://example.com/puzzle-image.jpg">
-          <small>Зображення буде використано для пазлу</small>
-        </div>
-        
-        <div class="config-item">
-          <label for="musicTracks">URL музичних треків (через кому):</label>
-          <input type="text" id="musicTracks" placeholder="https://example.com/music1.mp3, https://example.com/music2.mp3">
-          <small>Введіть 3 URL для музичних треків</small>
+        <div class="instructions">
+          <h3>Як грати?</h3>
+          <ul>
+            <li>Перетягуйте фрагменти пазлу на сітку</li>
+            <li>Якщо фрагмент на правильному місці, він зафіксується</li>
+            <li>Коли всі фрагменти будуть на своїх місцях, ви перемогли!</li>
+            <li>Використовуйте кнопку для контролю музики</li>
+            <li>Регулюйте гучність за допомогою повзунка</li>
+          </ul>
         </div>
       </div>
-      <button id="applyConfig" style="
-        margin-top: 20px;
-        padding: 12px 30px;
-        font-size: 18px;
-        border: none;
-        border-radius: 50px;
-        background: linear-gradient(to right, #4facfe, #00f2fe);
-        color: white;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      ">
-        <i class="fas fa-check"></i> Застосувати налаштування
-      </button>
-    </div>
-    
-    <div class="github-info">
-      <h3><i class="fab fa-github"></i> Інструкція для GitHub</h3>
-      <p>Щоб використовувати цей пазл на GitHub:</p>
-      <ol style="text-align: left; max-width: 600px; margin: 15px auto; line-height: 1.8;">
-        <li>Завантажте цей HTML файл у свій репозиторій</li>
-        <li>Додайте свої файли (зображення, музика) до репозиторію</li>
-        <li>Отримайте прямі посилання на ваші файли (використовуючи GitHub Pages або raw.githubusercontent.com)</li>
-        <li>Введіть URL у відповідні поля вище та натисніть "Застосувати налаштування"</li>
-        <li>Збережіть та використовуйте оновлений файл</li>
-      </ol>
-      <p>Приклад посилання для GitHub: <code>https://raw.githubusercontent.com/username/repo/main/image.png</code></p>
     </div>
   </div>
   
   <div class="success-message" id="successMessage">
     <div class="success-content">
       <h2>Вітаємо!</h2>
-      <p>Ви успішно склали пазл! Тепер ви можете відсканувати QR-код, щоб отримати доступ до ексклюзивного контенту.</p>
+      <p>Ви успішно склали пазл! Ваше зображення повністю відновлено.</p>
       <button id="continueButton" style="
         padding: 12px 40px;
         font-size: 1.2rem;
@@ -548,210 +474,178 @@
         font-weight: bold;
         margin-top: 20px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      "><i class="fas fa-redo"></i> Грати знову</button>
+      ">Грати знову</button>
     </div>
   </div>
 
-  <!-- Default audio elements (will be replaced if custom URLs are provided) -->
-  <audio id="track1" src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3"></audio>
-  <audio id="track2" src="https://assets.mixkit.co/music/preview/mixkit-simple-game-music-loop-310.mp3"></audio>
-  <audio id="track3" src="https://assets.mixkit.co/music/preview/mixkit-game-show-theme-687.mp3"></audio>
+  <audio id="musicTrack"></audio>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Елементи для налаштувань
-      const qrInput = document.getElementById('qrInput');
-      const puzzleImageInput = document.getElementById('puzzleImage');
-      const musicTracksInput = document.getElementById('musicTracks');
-      const applyConfigBtn = document.getElementById('applyConfig');
+      // Константи гри
+      const PUZZLE_SIZE = 5;
+      const TILE_SIZE = 100;
+      const BOARD_SIZE = 500;
       
-      // Змінні для налаштувань
-      let customQrUrl = '';
-      let customPuzzleImage = '';
-      let customMusicTracks = [];
+      // Елементи DOM
+      const puzzleBoard = document.getElementById('puzzle-board');
+      const correctCountElement = document.getElementById('correctCount');
+      const musicTrack = document.getElementById('musicTrack');
+      const imageStatus = document.getElementById('imageStatus');
+      const musicStatus = document.getElementById('musicStatus');
       
-      // Застосування налаштувань
-      applyConfigBtn.addEventListener('click', () => {
-        customQrUrl = qrInput.value.trim();
-        customPuzzleImage = puzzleImageInput.value.trim();
+      // Стан гри
+      let puzzlePieces = [];
+      let puzzleSlots = [];
+      let correctCount = 0;
+      
+      // Шляхи до файлів
+      const IMAGE_PATH = 'Picture1.jpg';
+      const MUSIC_PATH = 'music1.mp3';
+      
+      // Ініціалізація гри
+      function initGame() {
+        // Очистити дошку
+        puzzleBoard.innerHTML = '';
+        puzzlePieces = [];
+        puzzleSlots = [];
+        correctCount = 0;
+        correctCountElement.textContent = correctCount;
         
-        // Обробка музичних треків
-        const tracks = musicTracksInput.value.split(',').map(t => t.trim()).filter(t => t);
-        if (tracks.length >= 3) {
-          customMusicTracks = tracks.slice(0, 3);
+        // Створення слотів
+        for (let row = 0; row < PUZZLE_SIZE; row++) {
+          for (let col = 0; col < PUZZLE_SIZE; col++) {
+            const slot = document.createElement('div');
+            slot.className = 'puzzle-slot';
+            slot.style.width = `${TILE_SIZE}px`;
+            slot.style.height = `${TILE_SIZE}px`;
+            slot.style.left = `${col * TILE_SIZE}px`;
+            slot.style.top = `${row * TILE_SIZE}px`;
+            slot.dataset.row = row;
+            slot.dataset.col = col;
+            puzzleBoard.appendChild(slot);
+            puzzleSlots.push(slot);
+          }
         }
         
-        alert('Налаштування застосовано! Оновіть сторінку для застосування змін.');
-      });
-      
-      // Відображення QR-коду
-      const qrCodeElement = document.getElementById('qrCode');
-      function displayQrCode() {
-        if (customQrUrl) {
-          qrCodeElement.innerHTML = `<img src="${customQrUrl}" alt="Ваш QR-код">`;
-        } else {
-          // Запасний варіант QR-коду
-          qrCodeElement.innerHTML = `
-            <svg width="180" height="180" viewBox="0 0 180 180">
-              <rect width="180" height="180" fill="white"/>
-              <rect x="20" y="20" width="140" height="140" fill="black"/>
-              <rect x="40" y="40" width="100" height="100" fill="white"/>
-              <rect x="60" y="60" width="60" height="60" fill="black"/>
-              <rect x="70" y="25" width="5" height="30" fill="black"/>
-              <rect x="25" y="70" width="30" height="5" fill="black"/>
-            </svg>
-          `;
-        }
-      }
-      
-      // Ініціалізація пазлу
-      const puzzle = document.getElementById('puzzle');
-      const size = 5;
-      const tileSize = 100;
-      const pieces = [];
-      let placedPieces = 0;
-      
-      function initPuzzle() {
-        // Очистити попередній пазл
-        puzzle.innerHTML = '';
-        pieces.length = 0;
-        placedPieces = 0;
-        
-        // Створити новий пазл
-        for (let y = 0; y < size; y++) {
-          for (let x = 0; x < size; x++) {
+        // Створення фрагментів пазлу
+        for (let row = 0; row < PUZZLE_SIZE; row++) {
+          for (let col = 0; col < PUZZLE_SIZE; col++) {
             const piece = document.createElement('div');
-            piece.className = 'piece';
+            piece.className = 'puzzle-piece';
+            piece.style.width = `${TILE_SIZE}px`;
+            piece.style.height = `${TILE_SIZE}px`;
             
-            // Використовуємо кастомне зображення або градієнт
-            if (customPuzzleImage) {
-              piece.style.backgroundImage = `url('${customPuzzleImage}')`;
-              piece.style.backgroundPosition = `-${x * tileSize}px -${y * tileSize}px`;
-            } else {
-              // Градієнтний фон за замовчуванням
-              const hue = (x * size + y) * 10;
-              piece.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue + 40}, 70%, 40%))`;
-              
-              // Додавання тексту для демонстрації
-              piece.innerHTML = `<div style="
-                width: 100%; 
-                height: 100%; 
-                display: flex; 
-                align-items: center; 
-                justify-content: center; 
-                font-size: 24px; 
-                font-weight: bold;
-                color: rgba(255,255,255,0.7);
-              ">${x+1}-${y+1}</div>`;
-            }
+            // Використання зображення з репозиторію
+            piece.style.backgroundImage = `url(${IMAGE_PATH})`;
+            piece.style.backgroundPosition = `-${col * TILE_SIZE}px -${row * TILE_SIZE}px`;
             
-            piece.dataset.correctX = x * tileSize;
-            piece.dataset.correctY = y * tileSize;
+            piece.dataset.row = row;
+            piece.dataset.col = col;
             
-            // Випадкове розміщення фрагментів
-            piece.style.left = `${Math.random() * (500 - tileSize)}px`;
-            piece.style.top = `${Math.random() * (500 - tileSize)}px`;
+            // Випадкове розміщення
+            piece.style.left = `${Math.random() * (BOARD_SIZE - TILE_SIZE)}px`;
+            piece.style.top = `${Math.random() * (BOARD_SIZE - TILE_SIZE)}px`;
             
+            // Додавання можливості перетягування
             piece.draggable = true;
-            piece.addEventListener('dragstart', e => {
-              e.dataTransfer.setData('text/plain', pieces.indexOf(piece));
-            });
+            piece.addEventListener('dragstart', handleDragStart);
             
-            pieces.push(piece);
-            puzzle.appendChild(piece);
+            puzzleBoard.appendChild(piece);
+            puzzlePieces.push(piece);
           }
         }
       }
       
-      // Обробка перетягування
-      puzzle.addEventListener('dragover', e => e.preventDefault());
-      puzzle.addEventListener('drop', e => {
+      // Обробники перетягування
+      function handleDragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.dataset.row + ',' + e.target.dataset.col);
+      }
+      
+      puzzleBoard.addEventListener('dragover', e => {
         e.preventDefault();
-        const index = e.dataTransfer.getData('text/plain');
-        const piece = pieces[index];
-        const rect = puzzle.getBoundingClientRect();
-        const offsetX = e.clientX - rect.left;
-        const offsetY = e.clientY - rect.top;
+      });
+      
+      puzzleBoard.addEventListener('drop', e => {
+        e.preventDefault();
+        const data = e.dataTransfer.getData('text/plain').split(',');
+        const row = parseInt(data[0]);
+        const col = parseInt(data[1]);
+        const piece = puzzlePieces.find(p => 
+          p.dataset.row == row && p.dataset.col == col
+        );
         
-        const newX = Math.floor(offsetX / tileSize) * tileSize;
-        const newY = Math.floor(offsetY / tileSize) * tileSize;
+        // Знайти найближчий слот
+        const rect = puzzleBoard.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
         
-        piece.style.left = `${newX}px`;
-        piece.style.top = `${newY}px`;
+        let closestSlot = null;
+        let minDistance = Infinity;
         
-        // Перевірка чи фрагмент на правильному місці
-        if (parseInt(piece.dataset.correctX) === newX && 
-            parseInt(piece.dataset.correctY) === newY) {
-          piece.style.border = "2px solid #00ff00";
-          placedPieces++;
+        puzzleSlots.forEach(slot => {
+          const slotX = parseInt(slot.style.left) + TILE_SIZE / 2;
+          const slotY = parseInt(slot.style.top) + TILE_SIZE / 2;
+          const distance = Math.sqrt(
+            Math.pow(mouseX - slotX, 2) + 
+            Math.pow(mouseY - slotY, 2)
+          );
           
-          // Перевірка завершення пазлу
-          if (placedPieces === size * size) {
-            setTimeout(() => {
-              document.getElementById('successMessage').classList.add('show');
-              createConfetti();
-            }, 1000);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestSlot = slot;
           }
-        } else {
-          piece.style.border = "1px solid rgba(255, 255, 255, 0.2)";
+        });
+        
+        if (closestSlot && minDistance < TILE_SIZE) {
+          const slotRow = parseInt(closestSlot.dataset.row);
+          const slotCol = parseInt(closestSlot.dataset.col);
+          
+          // Перевірка чи фрагмент на правильному місці
+          if (row === slotRow && col === slotCol) {
+            piece.style.left = `${slotCol * TILE_SIZE}px`;
+            piece.style.top = `${slotRow * TILE_SIZE}px`;
+            piece.classList.add('correct');
+            piece.draggable = false;
+            
+            // Оновлення лічильника
+            correctCount++;
+            correctCountElement.textContent = correctCount;
+            
+            // Перевірка завершення
+            if (correctCount === PUZZLE_SIZE * PUZZLE_SIZE) {
+              setTimeout(() => {
+                document.getElementById('successMessage').classList.add('show');
+                createConfetti();
+              }, 1000);
+            }
+          }
         }
       });
       
-      // Музика
-      const tracks = [
-        document.getElementById('track1'),
-        document.getElementById('track2'),
-        document.getElementById('track3')
-      ];
-      let currentTrack = 0;
-      let isPlaying = false;
-      
-      // Оновлення музичних треків, якщо задані кастомні URL
-      if (customMusicTracks.length >= 3) {
-        tracks[0].src = customMusicTracks[0];
-        tracks[1].src = customMusicTracks[1];
-        tracks[2].src = customMusicTracks[2];
-      }
-      
-      function playNext() {
-        currentTrack = (currentTrack + 1) % tracks.length;
-        tracks[currentTrack].play();
-      }
-      
-      // Обробка помилок при відтворенні
-      function playWithFallback() {
-        tracks[currentTrack].play().catch(error => {
-          console.log("Автовідтворення заблоковано, натисніть кнопку 'Старт музики'");
-        });
-      }
-      
-      tracks.forEach(track => {
-        track.onended = playNext;
-        track.onerror = () => console.error("Помилка завантаження аудіо");
-      });
-      
-      // Контроль гучності
+      // Музичний контроль
       const volumeSlider = document.getElementById('volumeControl');
       volumeSlider.addEventListener('input', () => {
-        tracks.forEach(track => track.volume = volumeSlider.value);
+        musicTrack.volume = volumeSlider.value;
       });
       
-      // Кнопка пуск/пауза
       const toggleBtn = document.getElementById('musicToggle');
+      let isPlaying = false;
+      
       toggleBtn.addEventListener('click', () => {
         if (!isPlaying) {
           // Перше включення музики
-          tracks[currentTrack].play().then(() => {
+          musicTrack.play().then(() => {
             isPlaying = true;
-            toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
+            toggleBtn.textContent = 'Пауза';
           }).catch(error => {
             console.log("Потрібна взаємодія користувача: " + error);
             alert("Браузер вимагає взаємодії користувача для запуску музики. Натисніть кнопку ще раз.");
           });
         } else {
-          tracks.forEach(track => track.pause());
+          musicTrack.pause();
           isPlaying = false;
-          toggleBtn.innerHTML = '<i class="fas fa-play"></i> Старт музики';
+          toggleBtn.textContent = 'Старт музики';
         }
       });
       
@@ -780,13 +674,44 @@
       // Обробка кнопки продовження
       document.getElementById('continueButton').addEventListener('click', () => {
         document.getElementById('successMessage').classList.remove('show');
-        initPuzzle();
-        displayQrCode();
+        initGame();
       });
       
-      // Ініціалізація гри
-      displayQrCode();
-      initPuzzle();
+      // Перевірка наявності файлів
+      function checkFiles() {
+        // Перевірка зображення
+        const imageTest = new Image();
+        imageTest.onload = function() {
+          imageStatus.textContent = "Зображення Picture1.jpg завантажено успішно!";
+          imageStatus.classList.add('success');
+          initGame();
+        };
+        imageTest.onerror = function() {
+          imageStatus.textContent = "Помилка: Picture1.jpg не знайдено в репозиторії";
+          imageStatus.classList.add('error');
+          
+          // Створити пазл з градієнтами, якщо зображення відсутнє
+          setTimeout(initGame, 1000);
+        };
+        imageTest.src = IMAGE_PATH;
+        
+        // Перевірка музики
+        musicTrack.src = MUSIC_PATH;
+        musicTrack.load();
+        
+        musicTrack.onloadeddata = function() {
+          musicStatus.textContent = "Музичний файл music1.mp3 завантажено успішно!";
+          musicStatus.classList.add('success');
+        };
+        
+        musicTrack.onerror = function() {
+          musicStatus.textContent = "Помилка: music1.mp3 не знайдено в репозиторії";
+          musicStatus.classList.add('error');
+        };
+      }
+      
+      // Запуск перевірки файлів
+      checkFiles();
     });
   </script>
 </body>
