@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Музичний Пазл з QR-кодом</title>
+  <title>Пазл з QR-кодом | GitHub Версія</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
@@ -242,6 +243,14 @@
       background: white;
       padding: 10px;
       border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #qrCode img {
+      max-width: 100%;
+      max-height: 100%;
     }
     
     .qr-section p {
@@ -333,6 +342,58 @@
       color: #ff9966;
     }
     
+    .config-section {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    
+    .config-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 15px;
+    }
+    
+    .config-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .config-item label {
+      font-weight: bold;
+      color: #ffcc00;
+    }
+    
+    .config-item input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .github-info {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .github-info a {
+      color: #4facfe;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .github-info a:hover {
+      text-decoration: underline;
+    }
+    
     @media (max-width: 1100px) {
       .game-area {
         flex-direction: column;
@@ -369,8 +430,8 @@
 <body>
   <div class="container">
     <header>
-      <h1>Музичний Пазл з QR-кодом</h1>
-      <p class="subtitle">Складіть пазл, щоб відкрити QR-код, насолоджуючись музикою. Перетягуйте фрагменти пазлу на правильні позиції.</p>
+      <h1><i class="fab fa-github"></i> Пазл з QR-кодом - GitHub Версія</h1>
+      <p class="subtitle">Складіть пазл, щоб відкрити QR-код, насолоджуючись музикою. Легко налаштовується для вашого GitHub проекту!</p>
     </header>
     
     <div class="game-area">
@@ -380,24 +441,23 @@
       
       <div class="controls-section">
         <div class="music-controls">
-          <h2>Музичний супровід</h2>
+          <h2><i class="fas fa-music"></i> Музичний супровід</h2>
           <div id="controls">
             <div class="volume-container">
-              <label for="volumeControl">Гучність:</label>
+              <label for="volumeControl"><i class="fas fa-volume-up"></i> Гучність:</label>
               <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
             </div>
-            <button id="musicToggle">Старт музики</button>
+            <button id="musicToggle"><i class="fas fa-play"></i> Старт музики</button>
           </div>
         </div>
         
         <div class="instructions">
-          <h3>Як грати?</h3>
+          <h3><i class="fas fa-info-circle"></i> Як грати?</h3>
           <ul>
             <li>Перетягуйте фрагменти пазлу на поле, щоб скласти зображення</li>
             <li>Коли пазл буде зібрано, ви побачите QR-код</li>
             <li>Використовуйте кнопку для контролю музики</li>
             <li>Регулюйте гучність за допомогою повзунка</li>
-            <li>Музика почне грати після натискання кнопки "Старт музики"</li>
           </ul>
         </div>
         
@@ -414,10 +474,62 @@
       </div>
       
       <div class="qr-section">
-        <h2>Ваша нагорода</h2>
-        <div id="qrCode"></div>
+        <h2><i class="fas fa-qrcode"></i> Ваша нагорода</h2>
+        <div id="qrCode">
+          <!-- QR code will be inserted here -->
+        </div>
         <p>Відскануйте цей QR-код після складання пазлу, щоб отримати доступ до ексклюзивного контенту!</p>
       </div>
+    </div>
+    
+    <div class="config-section">
+      <h2><i class="fas fa-cog"></i> Налаштування для GitHub</h2>
+      <div class="config-container">
+        <div class="config-item">
+          <label for="qrInput">URL вашого QR-коду:</label>
+          <input type="text" id="qrInput" placeholder="https://example.com/qr-code.png">
+          <small>Посилання на зображення вашого QR-коду</small>
+        </div>
+        
+        <div class="config-item">
+          <label for="puzzleImage">URL зображення для пазлу:</label>
+          <input type="text" id="puzzleImage" placeholder="https://example.com/puzzle-image.jpg">
+          <small>Зображення буде використано для пазлу</small>
+        </div>
+        
+        <div class="config-item">
+          <label for="musicTracks">URL музичних треків (через кому):</label>
+          <input type="text" id="musicTracks" placeholder="https://example.com/music1.mp3, https://example.com/music2.mp3">
+          <small>Введіть 3 URL для музичних треків</small>
+        </div>
+      </div>
+      <button id="applyConfig" style="
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      ">
+        <i class="fas fa-check"></i> Застосувати налаштування
+      </button>
+    </div>
+    
+    <div class="github-info">
+      <h3><i class="fab fa-github"></i> Інструкція для GitHub</h3>
+      <p>Щоб використовувати цей пазл на GitHub:</p>
+      <ol style="text-align: left; max-width: 600px; margin: 15px auto; line-height: 1.8;">
+        <li>Завантажте цей HTML файл у свій репозиторій</li>
+        <li>Додайте свої файли (зображення, музика) до репозиторію</li>
+        <li>Отримайте прямі посилання на ваші файли (використовуючи GitHub Pages або raw.githubusercontent.com)</li>
+        <li>Введіть URL у відповідні поля вище та натисніть "Застосувати налаштування"</li>
+        <li>Збережіть та використовуйте оновлений файл</li>
+      </ol>
+      <p>Приклад посилання для GitHub: <code>https://raw.githubusercontent.com/username/repo/main/image.png</code></p>
     </div>
   </div>
   
@@ -436,72 +548,118 @@
         font-weight: bold;
         margin-top: 20px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      ">Продовжити</button>
+      "><i class="fas fa-redo"></i> Грати знову</button>
     </div>
   </div>
-  
+
+  <!-- Default audio elements (will be replaced if custom URLs are provided) -->
   <audio id="track1" src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3"></audio>
   <audio id="track2" src="https://assets.mixkit.co/music/preview/mixkit-simple-game-music-loop-310.mp3"></audio>
   <audio id="track3" src="https://assets.mixkit.co/music/preview/mixkit-game-show-theme-687.mp3"></audio>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Створення QR-коду
-      const qrCode = document.getElementById('qrCode');
-      qrCode.innerHTML = `
-        <svg width="180" height="180" viewBox="0 0 180 180">
-          <rect width="180" height="180" fill="white"/>
-          <!-- QR код (спрощена версія) -->
-          <rect x="20" y="20" width="140" height="140" fill="black"/>
-          <rect x="40" y="40" width="100" height="100" fill="white"/>
-          <rect x="60" y="60" width="60" height="60" fill="black"/>
-          <rect x="70" y="25" width="5" height="30" fill="black"/>
-          <rect x="25" y="70" width="30" height="5" fill="black"/>
-        </svg>
-      `;
+      // Елементи для налаштувань
+      const qrInput = document.getElementById('qrInput');
+      const puzzleImageInput = document.getElementById('puzzleImage');
+      const musicTracksInput = document.getElementById('musicTracks');
+      const applyConfigBtn = document.getElementById('applyConfig');
       
+      // Змінні для налаштувань
+      let customQrUrl = '';
+      let customPuzzleImage = '';
+      let customMusicTracks = [];
+      
+      // Застосування налаштувань
+      applyConfigBtn.addEventListener('click', () => {
+        customQrUrl = qrInput.value.trim();
+        customPuzzleImage = puzzleImageInput.value.trim();
+        
+        // Обробка музичних треків
+        const tracks = musicTracksInput.value.split(',').map(t => t.trim()).filter(t => t);
+        if (tracks.length >= 3) {
+          customMusicTracks = tracks.slice(0, 3);
+        }
+        
+        alert('Налаштування застосовано! Оновіть сторінку для застосування змін.');
+      });
+      
+      // Відображення QR-коду
+      const qrCodeElement = document.getElementById('qrCode');
+      function displayQrCode() {
+        if (customQrUrl) {
+          qrCodeElement.innerHTML = `<img src="${customQrUrl}" alt="Ваш QR-код">`;
+        } else {
+          // Запасний варіант QR-коду
+          qrCodeElement.innerHTML = `
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              <rect width="180" height="180" fill="white"/>
+              <rect x="20" y="20" width="140" height="140" fill="black"/>
+              <rect x="40" y="40" width="100" height="100" fill="white"/>
+              <rect x="60" y="60" width="60" height="60" fill="black"/>
+              <rect x="70" y="25" width="5" height="30" fill="black"/>
+              <rect x="25" y="70" width="30" height="5" fill="black"/>
+            </svg>
+          `;
+        }
+      }
+      
+      // Ініціалізація пазлу
       const puzzle = document.getElementById('puzzle');
       const size = 5;
       const tileSize = 100;
       const pieces = [];
       let placedPieces = 0;
       
-      // Генерація пазлу
-      for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-          const piece = document.createElement('div');
-          piece.className = 'piece';
-          
-          // Генерація градієнтного фону для кожного фрагменту
-          const hue = (x * size + y) * 10;
-          piece.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue + 40}, 70%, 40%))`;
-          
-          // Додавання тексту для демонстрації
-          piece.innerHTML = `<div style="
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 24px; 
-            font-weight: bold;
-            color: rgba(255,255,255,0.7);
-          ">${x+1}-${y+1}</div>`;
-          
-          piece.dataset.correctX = x * tileSize;
-          piece.dataset.correctY = y * tileSize;
-          
-          // Випадкове розміщення фрагментів
-          piece.style.left = `${Math.random() * (500 - tileSize)}px`;
-          piece.style.top = `${Math.random() * (500 - tileSize)}px`;
-          
-          piece.draggable = true;
-          piece.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/plain', pieces.indexOf(piece));
-          });
-          
-          pieces.push(piece);
-          puzzle.appendChild(piece);
+      function initPuzzle() {
+        // Очистити попередній пазл
+        puzzle.innerHTML = '';
+        pieces.length = 0;
+        placedPieces = 0;
+        
+        // Створити новий пазл
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const piece = document.createElement('div');
+            piece.className = 'piece';
+            
+            // Використовуємо кастомне зображення або градієнт
+            if (customPuzzleImage) {
+              piece.style.backgroundImage = `url('${customPuzzleImage}')`;
+              piece.style.backgroundPosition = `-${x * tileSize}px -${y * tileSize}px`;
+            } else {
+              // Градієнтний фон за замовчуванням
+              const hue = (x * size + y) * 10;
+              piece.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue + 40}, 70%, 40%))`;
+              
+              // Додавання тексту для демонстрації
+              piece.innerHTML = `<div style="
+                width: 100%; 
+                height: 100%; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                font-size: 24px; 
+                font-weight: bold;
+                color: rgba(255,255,255,0.7);
+              ">${x+1}-${y+1}</div>`;
+            }
+            
+            piece.dataset.correctX = x * tileSize;
+            piece.dataset.correctY = y * tileSize;
+            
+            // Випадкове розміщення фрагментів
+            piece.style.left = `${Math.random() * (500 - tileSize)}px`;
+            piece.style.top = `${Math.random() * (500 - tileSize)}px`;
+            
+            piece.draggable = true;
+            piece.addEventListener('dragstart', e => {
+              e.dataTransfer.setData('text/plain', pieces.indexOf(piece));
+            });
+            
+            pieces.push(piece);
+            puzzle.appendChild(piece);
+          }
         }
       }
       
@@ -548,6 +706,13 @@
       let currentTrack = 0;
       let isPlaying = false;
       
+      // Оновлення музичних треків, якщо задані кастомні URL
+      if (customMusicTracks.length >= 3) {
+        tracks[0].src = customMusicTracks[0];
+        tracks[1].src = customMusicTracks[1];
+        tracks[2].src = customMusicTracks[2];
+      }
+      
       function playNext() {
         currentTrack = (currentTrack + 1) % tracks.length;
         tracks[currentTrack].play();
@@ -578,7 +743,7 @@
           // Перше включення музики
           tracks[currentTrack].play().then(() => {
             isPlaying = true;
-            toggleBtn.textContent = 'Пауза';
+            toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
           }).catch(error => {
             console.log("Потрібна взаємодія користувача: " + error);
             alert("Браузер вимагає взаємодії користувача для запуску музики. Натисніть кнопку ще раз.");
@@ -586,7 +751,7 @@
         } else {
           tracks.forEach(track => track.pause());
           isPlaying = false;
-          toggleBtn.textContent = 'Старт музики';
+          toggleBtn.innerHTML = '<i class="fas fa-play"></i> Старт музики';
         }
       });
       
@@ -615,7 +780,13 @@
       // Обробка кнопки продовження
       document.getElementById('continueButton').addEventListener('click', () => {
         document.getElementById('successMessage').classList.remove('show');
+        initPuzzle();
+        displayQrCode();
       });
+      
+      // Ініціалізація гри
+      displayQrCode();
+      initPuzzle();
     });
   </script>
 </body>
